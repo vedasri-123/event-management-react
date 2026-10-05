@@ -1,0 +1,6 @@
+import {useState} from 'react';import {Link,useNavigate} from 'react-router-dom';
+export default function Login(){const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [error,setError]=useState('');const nav=useNavigate();
+ const submit=e=>{e.preventDefault();const saved=JSON.parse(localStorage.getItem('eventAccount')||'null');if(saved&&saved.email===email&&saved.password===password){localStorage.setItem('eventUser',JSON.stringify({name:saved.name,email:saved.email}));nav('/events')}else setError('Invalid email or password. Please sign up first.');};
+ return <Auth title="Welcome Back" subtitle="Login to continue booking events."><form onSubmit={submit}><label>Email<input type="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label><label>Password<input type="password" required value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••"/></label>{error&&<p className="error">{error}</p>}<button className="primary full">Login</button></form><p className="switch">New user? <Link to="/signup">Create an account</Link></p></Auth>}
+function Auth({title,subtitle,children}){return <main className="auth-page"><div className="auth-box"><div className="auth-logo">EventHub</div><h1>{title}</h1><p>{subtitle}</p>{children}</div></main>}
+export {Auth};
